@@ -9,7 +9,9 @@ import { HttpClient} from '@angular/common/http'
 })
 export class EventosComponent implements OnInit {
 
-  eventos: any;
+  eventos: any =[] ;
+  imagemAltura: number = 50;
+  imagemMargem: number = 2;
 
   constructor(private http: HttpClient) { }
 

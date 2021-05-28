@@ -1,10 +1,53 @@
-<p>
-  eventos works!
-</p>
-
-<div *ngFor="let evento of eventos" >
-  Tema: {{evento.tema}}
-  <br>
-  Local: {{evento.local}}
-  <hr>
-</div>
+<form class="form-inline row">
+  <div class="form-group row " >
+    <div class="col-sm-3">
+      <input type="text" class="form-control " placeholder="buscar" >
+    </div>
+    <div class="col-sm-3">
+      <button class="btn btn-outline-success">buscar</button>  
+    </div>  
+  </div>
+</form>
+<br>
+<table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>#</th>
+      <th>Img</th>
+      <th>Tema</th>
+      <th>Local</th>
+      <th>Data</th>
+      <th>Qtd Pessoas</th>
+      <th>Lote</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventos && eventos.length" >
+    <tr *ngFor="let evento of eventos"  >
+      <td>{{evento.eventoId}}</td>
+      <td>
+        <img src="http://localhost:5000/img/{{evento.imagemURL}}"
+        [style.width.px]= "imagemAltura"
+        [style.margin.px]= "imagemMargem" >
+      </td>
+      <td>{{evento.tema}}</td>
+      <td>{{evento.local}}</td>
+      <td>{{evento.dataEvento}}</td>
+      <td>{{evento.qtdPessoas}}</td>
+      <td>{{evento.lote}}</td>
+      <td>
+        <button class="btn btn-success"></button>
+        <button class="btn btn-danger"></button>
+      </td>        
+    </tr>
+  </tbody>
+  <tfoot *ngIf= "!eventos.length" >
+    <tr>
+      <td colspan="7" class="text-center" >
+        <h3>
+          Nenhum evento emcontrado!
+        </h3>
+      </td>
+    </tr>
+  </tfoot>
+</table>
