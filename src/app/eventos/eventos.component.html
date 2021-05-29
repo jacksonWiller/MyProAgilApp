@@ -1,19 +1,28 @@
-<form class="form-inline row">
+<div class="form-inline row">
   <div class="form-group row " >
     <div class="col-sm-3">
-      <input type="text" class="form-control " placeholder="buscar" >
+      <!-- Two-way Data Binding -->
+      Filtro: <input type="text" class="form-control " 
+      placeholder="buscar" [(ngModel)]= "filtroLista">
     </div>
     <div class="col-sm-3">
       <button class="btn btn-outline-success">buscar</button>  
     </div>  
   </div>
-</form>
+</div>
+<h3>Filtro: {{filtroLista}}</h3>
 <br>
 <table class="table table-striped">
   <thead class="table-dark">
     <tr>
-      <th>#</th>
-      <th>Img</th>
+      <th>
+        <!-- Event Binding -->
+        <button class="btn btn-outline-success" 
+        (click)="alternarImagem()" >
+          Mostrar Imagem
+        </button>
+      </th>
+      <th>#</th>    
       <th>Tema</th>
       <th>Local</th>
       <th>Data</th>
@@ -22,20 +31,26 @@
       <th>Opções</th>
     </tr>
   </thead>
-  <tbody *ngIf="eventos && eventos.length" >
-    <tr *ngFor="let evento of eventos"  >
-      <td>{{evento.eventoId}}</td>
+
+  <tbody *ngIf="eventos && eventos.length" ><!-- Structural Diretive -->
+    <tr *ngFor="let evento of eventosFiltrados"  > <!-- PropertyBinding -->
       <td>
-        <img src="http://localhost:5000/img/{{evento.imagemURL}}"
+        <img *ngIf="mostrarImagem"
+        src="http://localhost:5000/img/{{evento.imagemURL}}"
+        
         [style.width.px]= "imagemAltura"
         [style.margin.px]= "imagemMargem" >
       </td>
+      <!-- Interpolação -->
+      <td>{{evento.eventoId}}</td> 
       <td>{{evento.tema}}</td>
       <td>{{evento.local}}</td>
       <td>{{evento.dataEvento}}</td>
       <td>{{evento.qtdPessoas}}</td>
-      <td>{{evento.lote}}</td>
+
+      <td>{{evento.lote | uppercase}}</td> 
       <td>
+       
         <button class="btn btn-success"></button>
         <button class="btn btn-danger"></button>
       </td>        
