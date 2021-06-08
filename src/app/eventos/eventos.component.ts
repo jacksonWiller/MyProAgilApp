@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient} from '@angular/common/http'
-
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { BsComponentRef } from 'ngx-bootstrap/component-loader';
+import { Evento } from '../_models/Evento';
+import { EventoService } from '../_service/evento.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-eventos',
@@ -8,6 +10,19 @@ import { HttpClient} from '@angular/common/http'
   styleUrls: ['./eventos.component.css']
 })
 export class EventosComponent implements OnInit {
+
+  eventosFiltrados: any = [];
+  eventos: any =[] ;
+  evento: any;
+  imagemAltura: number = 50;
+  imagemMargem: number = 2;
+  mostrarImagem = false;
+  modalRef!: BsModalRef;
+  
+  constructor(
+    private eventoService: EventoService
+   ,private modalService: BsModalService  
+  ) { }
 
   _filtroLista = '';
   get filtroLista(): string {
@@ -17,15 +32,10 @@ export class EventosComponent implements OnInit {
     this._filtroLista = value;
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;    
   }
-  
-  eventosFiltrados: any = [];
-  eventos: any =[] ;
-  evento: any;
-  imagemAltura: number = 50;
-  imagemMargem: number = 2;
-  mostrarImagem = false;
-  
-  constructor(private http: HttpClient) { }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
 
   ngOnInit() {
     this.getEventos();
@@ -42,10 +52,13 @@ export class EventosComponent implements OnInit {
     this.mostrarImagem = !this.mostrarImagem;
   }
 
+  //Get eventos observibles
   getEventos(){
-    this.eventos = this.http.get(" https://localhost:5001/evento").subscribe(response => {
-        this.eventos = response
-        console.log(response)
+    this.eventoService.getAllEvento().subscribe(
+      (_eventos: Evento[]) => {
+        this.eventos = _eventos;
+        this.eventosFiltrados = this.eventos;
+        console.log(_eventos)
       }, erro => {
         console.log(erro);
       });
